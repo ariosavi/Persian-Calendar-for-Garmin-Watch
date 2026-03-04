@@ -56,17 +56,21 @@ class PersianCalendarView extends Ui.View {
         var currentMonth = todayJalali.get("month");
         var currentYear = todayJalali.get("year");
 
+        // Calculate header position
+        var headerY = 8;
+        var headerX = Math.round(dc.getWidth() / 2).toNumber();
+
         // Draw the month and year as a header at the top of the screen if not in the current month view
         if (currentMonthView != currentMonth || currentYearView != currentYear) {
             var monthNames = ["Far.", "Ord.", "Kho.", "Tir.", "Mor.", "Sha.", "Meh.", "Aba.", "Aza.", "Dey.", "Bah.", "Esf."];
             var headerText = monthNames[currentMonthView - 1] + " " + currentYearView.toString();
             dc.setColor(Gfx.COLOR_DK_GREEN, Gfx.COLOR_TRANSPARENT);
-            dc.drawText(centerX, centerY - lineSpacing - 5, font, headerText, Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(headerX, headerY, font, headerText, Gfx.TEXT_JUSTIFY_CENTER);
         } else {
             // Draw the date string as a header at the top of the screen
             dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_TRANSPARENT);
             var dateStr = isGregorian ? persianCalendarApp.getGregorianDateStr() : persianCalendarApp.getJalaliDateStr();
-            dc.drawText(centerX, centerY - lineSpacing - 5, font, dateStr, Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(headerX, headerY, font, dateStr, Gfx.TEXT_JUSTIFY_CENTER);
         }
 
         drawMonthTable(dc, currentMonthView, currentYearView, currentMonth, todayJalali.get("day"));
@@ -77,8 +81,35 @@ class PersianCalendarView extends Ui.View {
     public function drawMonthTable(dc, viewMonth, viewYear, currentMonth, currentDay) {
         var marginLeft = 15;
         var startX = Math.round(dc.getWidth() / 9.0) + marginLeft;
-        var startY = 30;
+        
+        // Calculate header height and bottom margin for responsive layout
+        var headerHeight = 10; // Space for month/date header above calendar
+        var bottomMargin = 5;  // Minimum space at bottom
+        var availableHeight = dc.getHeight() - headerHeight - bottomMargin;
+        
+        // Determine number of weeks needed for this month
+        var weekDay = get_week_day(viewMonth, viewYear);
+        if (weekDay == 7) {
+            weekDay = 0;
+        }
+        var monthDays = get_month_days(viewMonth);
+        var weeksNeeded = Math.ceil((weekDay + monthDays) / 7.0).toNumber();
+        var totalHeightNeeded = (weeksNeeded + 1) * lineSpacing; // +1 for weekday header
+        
+        // Calculate dynamic spacing to fit all content
         var ySpacing = lineSpacing;
+        if (totalHeightNeeded > availableHeight) {
+            ySpacing = (availableHeight - lineSpacing) / weeksNeeded;
+            if (ySpacing < 1) {
+                ySpacing = 1;
+            }
+        }
+        
+        // Calculate starting Y position to center vertically with available space
+        var startY = Math.round((availableHeight - totalHeightNeeded) / 2.0).toNumber();
+        if (startY < 5) {
+            startY = 5;
+        }
 
         // Draw weekday header
         var weekDays = ['S', 'S', 'M', 'T', 'W', 'T', 'F'];
@@ -90,18 +121,12 @@ class PersianCalendarView extends Ui.View {
             } else {
                 dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
             }
-            dc.drawText(xPos, centerY - lineSpacing + startY, font, weekDays[i].toString(), Gfx.TEXT_JUSTIFY_CENTER);
+            dc.drawText(xPos, startY, font, weekDays[i].toString(), Gfx.TEXT_JUSTIFY_CENTER);
             xPos += Math.round(dc.getWidth() / 9.0) + 1;
         }
 
         // Draw calendar days
         var dayIterator = 1;
-        var weekDay = get_week_day(viewMonth, viewYear);
-        if (weekDay == 7) { // Adjust if weekDay equals 7
-            weekDay = 0;
-        }
-        var monthDays = get_month_days(viewMonth);
-
         var yPos = startY + ySpacing;
 
         while (dayIterator <= monthDays) {
@@ -125,7 +150,7 @@ class PersianCalendarView extends Ui.View {
                     }
 
                     var dateText = isGregorian ? persianCalendarApp.jalaliToGregorian(viewYear, viewMonth, dayIterator).get("day").toString() : dayIterator.toString();
-                    dc.drawText(xPos, centerY - lineSpacing + yPos, font, dateText, Gfx.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(xPos, yPos, font, dateText, Gfx.TEXT_JUSTIFY_CENTER);
                     dayIterator++;
                     if (dayIterator > monthDays) {
                         break;
