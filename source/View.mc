@@ -62,9 +62,25 @@ class PersianCalendarView extends Ui.View {
 
         // Draw the month and year as a header at the top of the screen if not in the current month view
         if (currentMonthView != currentMonth || currentYearView != currentYear) {
-            var monthNames = ["Far.", "Ord.", "Kho.", "Tir.", "Mor.", "Sha.", "Meh.", "Aba.", "Aza.", "Dey.", "Bah.", "Esf."];
-            var headerText = monthNames[currentMonthView - 1] + " " + currentYearView.toString();
-            dc.setColor(Gfx.COLOR_DK_GREEN, Gfx.COLOR_TRANSPARENT);
+            var persianMonthNames = ["Far.", "Ord.", "Kho.", "Tir.", "Mor.", "Sha.", "Meh.", "Aba.", "Aza.", "Dey.", "Bah.", "Esf."];
+            var gregorianMonthNames = ["Jan.", "Feb.", "Mar.", "Apr.", "May", "Jun.", "Jul.", "Aug.", "Sep.", "Oct.", "Nov.", "Dec."];
+            
+            var headerText;
+            var headerColor;
+            
+            if (isGregorian) {
+                // Convert Jalali month/year to Gregorian equivalent
+                var gregorianDate = persianCalendarApp.jalaliToGregorian(currentYearView, currentMonthView, 1);
+                var gregorianMonth = gregorianDate.get("month");
+                var gregorianYear = gregorianDate.get("year");
+                headerText = gregorianMonthNames[gregorianMonth - 1] + " " + gregorianYear.toString();
+                headerColor = Gfx.COLOR_LT_GRAY;
+            } else {
+                headerText = persianMonthNames[currentMonthView - 1] + " " + currentYearView.toString();
+                headerColor = Gfx.COLOR_DK_GREEN;
+            }
+            
+            dc.setColor(headerColor, Gfx.COLOR_TRANSPARENT);
             dc.drawText(headerX, headerY, font, headerText, Gfx.TEXT_JUSTIFY_CENTER);
         } else {
             // Draw the date string as a header at the top of the screen
@@ -73,12 +89,12 @@ class PersianCalendarView extends Ui.View {
             dc.drawText(headerX, headerY, font, dateStr, Gfx.TEXT_JUSTIFY_CENTER);
         }
 
-        drawMonthTable(dc, currentMonthView, currentYearView, currentMonth, todayJalali.get("day"));
+        drawMonthTable(dc, currentMonthView, currentYearView, currentMonth, todayJalali.get("day"), today.month, today.day);
 
     }
 
     // Draws the calendar month table
-    public function drawMonthTable(dc, viewMonth, viewYear, currentMonth, currentDay) {
+    public function drawMonthTable(dc, viewMonth, viewYear, currentMonth, currentDay, todayGregorianMonth, todayGregorianDay) {
         var marginLeft = 15;
         var startX = Math.round(dc.getWidth() / 9.0) + marginLeft;
         
@@ -133,8 +149,21 @@ class PersianCalendarView extends Ui.View {
             xPos = startX;
             for (var i = 0; i < 7; i++) {
                 if (dayIterator != 1 || weekDay == i) {
+                    // Check if this is today's date
+                    var isToday = false;
+                    if (isGregorian) {
+                        // Convert current Jalali date to Gregorian for comparison
+                        var gregorianDateObj = persianCalendarApp.jalaliToGregorian(viewYear, viewMonth, dayIterator);
+                        var gregorianDay = gregorianDateObj.get("day");
+                        var gregorianMonth = gregorianDateObj.get("month");
+                        isToday = (gregorianMonth == todayGregorianMonth && gregorianDay == todayGregorianDay);
+                    } else {
+                        // Compare Jalali dates directly
+                        isToday = (viewMonth == currentMonth && dayIterator == currentDay);
+                    }
+                    
                     // Highlight the current day in blue
-                    if (viewMonth == currentMonth && dayIterator == currentDay) {
+                    if (isToday) {
                         dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_TRANSPARENT);
                     // Normal color for Gregorian dates
                     } else if(isGregorian) {
