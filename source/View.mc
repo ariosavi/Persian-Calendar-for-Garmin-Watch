@@ -89,12 +89,12 @@ class PersianCalendarView extends Ui.View {
             dc.drawText(headerX, headerY, font, dateStr, Gfx.TEXT_JUSTIFY_CENTER);
         }
 
-        drawMonthTable(dc, currentMonthView, currentYearView, currentMonth, todayJalali.get("day"), today.month, today.day);
+        drawMonthTable(dc, currentMonthView, currentYearView, currentMonth, currentYear, todayJalali.get("day"), today.month, today.day, today.year);
 
     }
 
     // Draws the calendar month table
-    public function drawMonthTable(dc, viewMonth, viewYear, currentMonth, currentDay, todayGregorianMonth, todayGregorianDay) {
+    public function drawMonthTable(dc, viewMonth, viewYear, currentMonth, currentYear, currentDay, todayGregorianMonth, todayGregorianDay, todayGregorianYear) {
         var marginLeft = 15;
         var startX = Math.round(dc.getWidth() / 9.0) + marginLeft;
         
@@ -103,12 +103,40 @@ class PersianCalendarView extends Ui.View {
         var bottomMargin = 5;  // Minimum space at bottom
         var availableHeight = dc.getHeight() - headerHeight - bottomMargin;
         
-        // Determine number of weeks needed for this month
-        var weekDay = get_week_day(viewMonth, viewYear);
+        // Determine month structure based on display mode
+        var displayMonth = viewMonth;
+        var displayYear = viewYear;
+        var monthDays;
+        var weekDay;
+        
+        if (isGregorian) {
+            // If viewing today in Gregorian mode, use today's actual Gregorian month
+            // This handles the case where a Persian month spans two Gregorian months
+            if (viewMonth == currentMonth && viewYear == currentYear) {
+                displayMonth = todayGregorianMonth;
+                displayYear = todayGregorianYear;
+            } else {
+                // Get the Gregorian equivalent month and year (using the middle of the month to be more accurate)
+                var gregorianMidDay = persianCalendarApp.jalaliToGregorian(viewYear, viewMonth, 15);
+                displayMonth = gregorianMidDay.get("month");
+                displayYear = gregorianMidDay.get("year");
+            }
+            
+            // Get number of days in Gregorian month
+            monthDays = get_gregorian_month_days(displayMonth, displayYear);
+            
+            // Get first weekday of Gregorian month
+            weekDay = get_gregorian_week_day(displayMonth, displayYear);
+        } else {
+            // Use Jalali month structure
+            monthDays = get_month_days(viewMonth);
+            weekDay = get_week_day(viewMonth, viewYear);
+        }
+        
         if (weekDay == 7) {
             weekDay = 0;
         }
-        var monthDays = get_month_days(viewMonth);
+        
         var weeksNeeded = Math.ceil((weekDay + monthDays) / 7.0).toNumber();
         var totalHeightNeeded = (weeksNeeded + 1) * lineSpacing; // +1 for weekday header
         
@@ -144,6 +172,7 @@ class PersianCalendarView extends Ui.View {
         // Draw calendar days
         var dayIterator = 1;
         var yPos = startY + ySpacing;
+        var jalaliIteratorDay = 1;
 
         while (dayIterator <= monthDays) {
             xPos = startX;
@@ -152,14 +181,10 @@ class PersianCalendarView extends Ui.View {
                     // Check if this is today's date
                     var isToday = false;
                     if (isGregorian) {
-                        // Convert current Jalali date to Gregorian for comparison
-                        var gregorianDateObj = persianCalendarApp.jalaliToGregorian(viewYear, viewMonth, dayIterator);
-                        var gregorianDay = gregorianDateObj.get("day");
-                        var gregorianMonth = gregorianDateObj.get("month");
-                        isToday = (gregorianMonth == todayGregorianMonth && gregorianDay == todayGregorianDay);
+                        isToday = (displayMonth == todayGregorianMonth && displayYear == todayGregorianYear && dayIterator == todayGregorianDay);
                     } else {
                         // Compare Jalali dates directly
-                        isToday = (viewMonth == currentMonth && dayIterator == currentDay);
+                        isToday = (viewMonth == currentMonth && jalaliIteratorDay == currentDay);
                     }
                     
                     // Highlight the current day in blue
@@ -178,9 +203,12 @@ class PersianCalendarView extends Ui.View {
                         }
                     }
 
-                    var dateText = isGregorian ? persianCalendarApp.jalaliToGregorian(viewYear, viewMonth, dayIterator).get("day").toString() : dayIterator.toString();
+                    var dateText = dayIterator.toString();
                     dc.drawText(xPos, yPos, font, dateText, Gfx.TEXT_JUSTIFY_CENTER);
                     dayIterator++;
+                    if (!isGregorian) {
+                        jalaliIteratorDay++;
+                    }
                     if (dayIterator > monthDays) {
                         break;
                     }
@@ -238,6 +266,42 @@ function get_week_day(month, year) {
         :year  => gregorian.get("year"),
         :month => gregorian.get("month"),
         :day   => gregorian.get("day")
+    };
+    var date = Gregorian.moment(options);
+    var firstDayInfo = Gregorian.info(date, Time.FORMAT_SHORT);
+    return firstDayInfo.day_of_week;
+}
+
+// Helper function to get the number of days in a Gregorian month
+function get_gregorian_month_days(month, year) {
+    var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    
+    // Check for leap year
+    var isLeap = false;
+    if (year % 400 == 0) {
+        isLeap = true;
+    } else if (year % 100 == 0) {
+        isLeap = false;
+    } else if (year % 4 == 0) {
+        isLeap = true;
+    }
+    
+    if (month == 2 && isLeap) {
+        return 29;
+    }
+    
+    if (month >= 1 && month <= 12) {
+        return monthDays[month - 1];
+    }
+    return 0;
+}
+
+// Helper function to calculate the weekday of the first day of the given Gregorian month/year
+function get_gregorian_week_day(month, year) {
+    var options = {
+        :year  => year,
+        :month => month,
+        :day   => 1
     };
     var date = Gregorian.moment(options);
     var firstDayInfo = Gregorian.info(date, Time.FORMAT_SHORT);
