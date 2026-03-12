@@ -129,7 +129,7 @@ class PersianCalendarView extends Ui.View {
             weekDay = get_gregorian_week_day(displayMonth, displayYear);
         } else {
             // Use Jalali month structure
-            monthDays = get_month_days(viewMonth);
+            monthDays = get_month_days(viewMonth, viewYear);
             weekDay = get_week_day(viewMonth, viewYear);
         }
         
@@ -250,13 +250,25 @@ class PersianCalendarView extends Ui.View {
     }
 }
 
-// Helper function to get the number of days in a month (for months 1-12)
-function get_month_days(month) {
-    var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+// Helper function to get the number of days in a Persian month (for months 1-12)
+function get_month_days(month, year) {
+    // Persian calendar: months 1-6 have 31 days, months 7-11 have 30 days, month 12 has 29 days (30 in leap years)
+    var monthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
     if (month >= 1 && month <= 12) {
-        return monthDays[month - 1];
+        var days = monthDays[month - 1];
+        // Check for leap year and adjust Esfand (month 12)
+        if (month == 12 && is_jalali_leap_year(year)) {
+            days = 30;
+        }
+        return days;
     }
     return 0;
+}
+
+// Helper function to determine if a Persian year is a leap year
+function is_jalali_leap_year(year) {
+    // Persian calendar leap year: year % 5 == 3 means years ending in 03, 08, 13, 18, 23, 28, etc.
+    return (year % 5) == 3;
 }
 
 // Helper function to calculate the weekday of the first day of the given Jalali month/year
