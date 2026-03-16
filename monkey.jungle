@@ -1,3 +1,6 @@
+# Device launcher icon sizes configuration for Garmin Connect IQ
+# Reference: https://developer.garmin.com/connect-iq/device-reference/
+
 base.sourcePath = source
 
 project.manifest = manifest.xml
@@ -5,12 +8,17 @@ project.manifest = manifest.xml
 
 base.resourcePath = resources/default
 
+# Devices with 32 x 32 icon size
+gpsmaph1.resourcePath = $(base.resourcePath);resources/32x32-icon
+
 # Devices with 30 x 30 icon size
 vivoactive4s.resourcePath = $(base.resourcePath);resources/30x30-icon
 
 # Devices with 35 x 35 icon size
 fr55.resourcePath = $(base.resourcePath);resources/35x35-icon
 vivoactive4.resourcePath = $(base.resourcePath);resources/35x35-icon
+edge540.resourcePath = $(base.resourcePath);resources/35x35-icon
+edge840.resourcePath = $(base.resourcePath);resources/35x35-icon
 
 # Devices with 36 x 36 icon size
 venusq.resourcePath = $(base.resourcePath);resources/36x36-icon
@@ -19,7 +27,6 @@ edgeexplore2.resourcePath = $(base.resourcePath);resources/36x36-icon
 edgemtb.resourcePath = $(base.resourcePath);resources/36x36-icon
 
 # Devices with 40 x 33 icon size
-vivoactive3.resourcePath = $(base.resourcePath);resources/40x33-icon
 vivoactive3m.resourcePath = $(base.resourcePath);resources/40x33-icon
 
 # Devices with 40 x 40 icon size
@@ -38,6 +45,8 @@ fr945.resourcePath = $(base.resourcePath);resources/40x40-icon
 fr955.resourcePath = $(base.resourcePath);resources/40x40-icon
 venusq2.resourcePath = $(base.resourcePath);resources/40x40-icon
 venusq2m.resourcePath = $(base.resourcePath);resources/40x40-icon
+edge1040.resourcePath = $(base.resourcePath);resources/40x40-icon
+enduro3.resourcePath = $(base.resourcePath);resources/40x40-icon
 
 # Devices with 52 x 52 icon size
 instincte40mm.resourcePath = $(base.resourcePath);resources/52x52-icon
@@ -47,9 +56,13 @@ fr165.resourcePath = $(base.resourcePath);resources/54x54-icon
 fr165m.resourcePath = $(base.resourcePath);resources/54x54-icon
 fr57042mm.resourcePath = $(base.resourcePath);resources/54x54-icon
 vivoactive6.resourcePath = $(base.resourcePath);resources/54x54-icon
+venu441mm.resourcePath = $(base.resourcePath);resources/54x54-icon
 
 # Devices with 56 x 56 icon size
 vivoactive5.resourcePath = $(base.resourcePath);resources/56x56-icon
+approachs50.resourcePath = $(base.resourcePath);resources/56x56-icon
+edge550.resourcePath = $(base.resourcePath);resources/56x56-icon
+edge850.resourcePath = $(base.resourcePath);resources/56x56-icon
 
 # Devices with 60 x 60 icon size
 epix2.resourcePath = $(base.resourcePath);resources/60x60-icon
@@ -60,6 +73,8 @@ fr265s.resourcePath = $(base.resourcePath);resources/60x60-icon
 instinct3amoled45mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 instinct3amoled50mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 descentg2.resourcePath = $(base.resourcePath);resources/60x60-icon
+d2mach1.resourcePath = $(base.resourcePath);resources/60x60-icon
+epix2pro51mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 
 # Devices with 61 x 61 icon size
 venu2s.resourcePath = $(base.resourcePath);resources/61x61-icon
@@ -74,6 +89,9 @@ fr57047mm.resourcePath = $(base.resourcePath);resources/65x65-icon
 fr965.resourcePath = $(base.resourcePath);resources/65x65-icon
 fr970.resourcePath = $(base.resourcePath);resources/65x65-icon
 venux1.resourcePath = $(base.resourcePath);resources/65x65-icon
+d2mach2.resourcePath = $(base.resourcePath);resources/65x65-icon
+fenix8pro47mm.resourcePath = $(base.resourcePath);resources/65x65-icon
+venu445mm.resourcePath = $(base.resourcePath);resources/65x65-icon
 
 # Devices with 68 x 68 icon size
 edge1050.resourcePath = $(base.resourcePath);resources/68x68-icon
@@ -83,3 +101,4 @@ venu2.resourcePath = $(base.resourcePath);resources/70x70-icon
 venu2plus.resourcePath = $(base.resourcePath);resources/70x70-icon
 venu3.resourcePath = $(base.resourcePath);resources/70x70-icon
 venu3s.resourcePath = $(base.resourcePath);resources/70x70-icon
+d2airx10.resourcePath = $(base.resourcePath);resources/70x70-icon

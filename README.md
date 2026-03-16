@@ -48,8 +48,7 @@ To run the script, use the following command:
 
 ## Todo
 
-- Fix UI bug for forrunner 55
-- Cover more devices
+- Config page
 
 ## Related document
 
