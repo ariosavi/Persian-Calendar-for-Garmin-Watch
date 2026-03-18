@@ -48,12 +48,24 @@ To run the script, use the following command:
 
 ## Todo
 
-- Config page
+### Configuration (Settings Page)
+
+The application supports user settings through Garmin Connect IQ's Settings Page. Users can customize preferences via the Garmin Connect mobile app.
+
+#### Available Settings
+
+| Setting | Options | Default |
+|---------|---------|---------|
+| Default Calendar | Jalali / Gregorian | Jalali |
+| Show Gregorian Month | On / Off | On |
+| Week Start Day | Saturday / Sunday / Monday | Monday |
+| Persian Date Format | Hijri / Shahanshahi | Shahanshahi |
+
 
 ## Related document
 
-- https://developer.garmin.com/connect-iq/reference-guides/devices-reference/#devicereference
-- https://developer.garmin.com/connect-iq/compatible-devices/
+- [Devices Reference](https://developer.garmin.com/connect-iq/reference-guides/devices-reference/#devicereference)
+- [Compatible Devices](https://developer.garmin.com/connect-iq/compatible-devices/)
 
 ## License
 
