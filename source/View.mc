@@ -184,7 +184,7 @@ class PersianCalendarView extends Ui.View {
                         isToday = (displayMonth == todayGregorianMonth && displayYear == todayGregorianYear && dayIterator == todayGregorianDay);
                     } else {
                         // Compare Jalali dates directly
-                        isToday = (viewMonth == currentMonth && jalaliIteratorDay == currentDay);
+                        isToday = (viewMonth == currentMonth && viewYear == currentYear && jalaliIteratorDay == currentDay);
                     }
                     
                     // Highlight the current day in blue
