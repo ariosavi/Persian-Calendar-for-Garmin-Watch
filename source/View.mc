@@ -74,7 +74,7 @@ class PersianCalendarView extends Ui.View {
                 var gregorianMonth = gregorianDate.get("month");
                 var gregorianYear = gregorianDate.get("year");
                 headerText = gregorianMonthNames[gregorianMonth - 1] + " " + gregorianYear.toString();
-                headerColor = Gfx.COLOR_LT_GRAY;
+                headerColor = Gfx.COLOR_WHITE;
             } else {
                 headerText = persianMonthNames[currentMonthView - 1] + " " + currentYearView.toString();
                 headerColor = Gfx.COLOR_DK_GREEN;
@@ -84,8 +84,12 @@ class PersianCalendarView extends Ui.View {
             dc.drawText(headerX, headerY, font, headerText, Gfx.TEXT_JUSTIFY_CENTER);
         } else {
             // Draw the date string as a header at the top of the screen
-            dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_TRANSPARENT);
             var dateStr = isGregorian ? persianCalendarApp.getGregorianDateStr() : persianCalendarApp.getJalaliDateStr();
+            if (isGregorian) {
+                dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
+            } else {
+                dc.setColor(Gfx.COLOR_DK_GREEN, Gfx.COLOR_TRANSPARENT);
+            }
             dc.drawText(headerX, headerY, font, dateStr, Gfx.TEXT_JUSTIFY_CENTER);
         }
 
@@ -190,14 +194,17 @@ class PersianCalendarView extends Ui.View {
                     // Highlight the current day in blue
                     if (isToday) {
                         dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_TRANSPARENT);
-                    // Normal color for Gregorian dates
-                    } else if(isGregorian) {
-                        dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
+                    } else if (isGregorian) {
+                        // Gregorian calendar: Sunday (second column, i==1) is red for holiday
+                        if (i == 1) {
+                            dc.setColor(Gfx.COLOR_DK_RED, Gfx.COLOR_TRANSPARENT);
+                        } else {
+                            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
+                        }
                     } else {
-                        // Different color for last column
+                        // Jalali calendar: Friday (last column, i==6) is red for holiday
                         if (i == 6) {
                             dc.setColor(Gfx.COLOR_DK_RED, Gfx.COLOR_TRANSPARENT);
-                        // Normal color for other cells
                         } else {
                             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
                         }
