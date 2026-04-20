@@ -7,6 +7,7 @@ This project provides a Persian (Jalali) calendar for Garmin watches. The calend
 - Display the current Persian date
 - Display the current Gregorian date
 - Navigate through the calendar using the up and down buttons
+- Configure first day of week (Saturday / Sunday / Monday)
 
 ## Screenshots
 
@@ -46,21 +47,16 @@ To run the script, use the following command:
 ./resources/create_drawables.sh
 ```
 
-## Todo
-
-### Configuration (Settings Page)
+## Configuration (Settings Page)
 
 The application supports user settings through Garmin Connect IQ's Settings Page. Users can customize preferences via the Garmin Connect mobile app.
 
-#### Available Settings
+### Available Settings
 
-| Setting | Options | Default |
-|---------|---------|---------|
-| Default Calendar | Jalali / Gregorian | Jalali |
-| Show Gregorian Month | On / Off | On |
-| Week Start Day | Saturday / Sunday / Monday | Monday |
-| Persian Date Format | Hijri / Shahanshahi | Shahanshahi |
-
+- Default Calendar: `Jalali / Gregorian` (default: `Jalali`)
+- Show Gregorian Month: `On / Off` (default: `On`)
+- Week Start Day: `Saturday / Sunday / Monday` (default: `Saturday`)
+- Persian Date Format: `Hijri / Shahanshahi` (default: `Shahanshahi`)
 
 ## Related document
 

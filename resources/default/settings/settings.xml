@@ -1,0 +1,9 @@
+<settings>
+    <setting propertyKey="@Properties.weekStartDay" title="@Strings.WeekStartDayTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.WeekStartSaturday</listEntry>
+            <listEntry value="1">@Strings.WeekStartSunday</listEntry>
+            <listEntry value="2">@Strings.WeekStartMonday</listEntry>
+        </settingConfig>
+    </setting>
+</settings>

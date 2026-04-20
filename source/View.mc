@@ -4,6 +4,7 @@ using Toybox.Time;
 using Toybox.Graphics as Gfx;
 using Toybox.System;
 using Toybox.Math;
+using Toybox.Application.Properties;
 
 class PersianCalendarView extends Ui.View {
     // Display properties
@@ -20,12 +21,13 @@ class PersianCalendarView extends Ui.View {
     // Instance of PersianCalendarApp (created only once)
     var persianCalendarApp;
     var isGregorian = false;
+    var weekStartShift = 0; // Default Saturday
 
     // Initialization method (called once)
     function initialize() {
         View.initialize();
         persianCalendarApp = new PersianCalendarApp();
-
+        loadWeekStartPreference();
         // Initialize calendar based on today's Gregorian date converted to Jalali
         var today = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
         var result = persianCalendarApp.gregorianToJalali(today.year, today.month, today.day);
@@ -41,11 +43,14 @@ class PersianCalendarView extends Ui.View {
     }
 
     function onShow() {
-        // Optional: Additional code when the view is shown can be added here
+        // Reload setting in case user changed it from phone/app settings.
+        loadWeekStartPreference();
     }
 
     // Called to update the display
     function onUpdate(dc) {
+        // Ensure latest app setting is reflected whenever the view redraws.
+        loadWeekStartPreference();
         font = Gfx.FONT_XTINY;
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_BLACK);
         dc.clear();
@@ -137,11 +142,12 @@ class PersianCalendarView extends Ui.View {
             weekDay = get_week_day(viewMonth, viewYear);
         }
         
-        if (weekDay == 7) {
-            weekDay = 0;
-        }
+        // Convert Garmin weekday numbering (Sun=1 ... Sat=7) to Saturday-based index (Sat=0 ... Fri=6).
+        weekDay = weekDay == 7 ? 0 : weekDay;
+        // Shift the index based on user-selected first day of week.
+        var firstDayColumn = (weekDay - weekStartShift + 7) % 7;
         
-        var weeksNeeded = Math.ceil((weekDay + monthDays) / 7.0).toNumber();
+        var weeksNeeded = Math.ceil((firstDayColumn + monthDays) / 7.0).toNumber();
         var totalHeightNeeded = (weeksNeeded + 1) * lineSpacing; // +1 for weekday header
         
         // Calculate dynamic spacing to fit all content
@@ -160,16 +166,17 @@ class PersianCalendarView extends Ui.View {
         }
 
         // Draw weekday header
-        var weekDays = ['S', 'S', 'M', 'T', 'W', 'T', 'F'];
+        var weekDaysBase = ['S', 'S', 'M', 'T', 'W', 'T', 'F']; // Sat, Sun, Mon, Tue, Wed, Thu, Fri
         var xPos = startX;
-        for (var i = 0; i < weekDays.size(); i++) {
+        for (var i = 0; i < weekDaysBase.size(); i++) {
+            var weekDayLabelIndex = (i + weekStartShift) % 7;
             // Set color based on device dimensions
             if (dc.getWidth() == 208 && dc.getHeight() == 208) {
                 dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
             } else {
                 dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
             }
-            dc.drawText(xPos, startY, font, weekDays[i].toString(), Gfx.TEXT_JUSTIFY_CENTER);
+            dc.drawText(xPos, startY, font, weekDaysBase[weekDayLabelIndex].toString(), Gfx.TEXT_JUSTIFY_CENTER);
             xPos += Math.round(dc.getWidth() / 9.0) + 1;
         }
 
@@ -181,7 +188,7 @@ class PersianCalendarView extends Ui.View {
         while (dayIterator <= monthDays) {
             xPos = startX;
             for (var i = 0; i < 7; i++) {
-                if (dayIterator != 1 || weekDay == i) {
+                if (dayIterator != 1 || firstDayColumn == i) {
                     // Check if this is today's date
                     var isToday = false;
                     if (isGregorian) {
@@ -195,15 +202,17 @@ class PersianCalendarView extends Ui.View {
                     if (isToday) {
                         dc.setColor(Gfx.COLOR_BLUE, Gfx.COLOR_TRANSPARENT);
                     } else if (isGregorian) {
-                        // Gregorian calendar: Sunday (second column, i==1) is red for holiday
-                        if (i == 1) {
+                        // Gregorian calendar: Sunday is red for holiday.
+                        var sundayColumn = (1 - weekStartShift + 7) % 7;
+                        if (i == sundayColumn) {
                             dc.setColor(Gfx.COLOR_DK_RED, Gfx.COLOR_TRANSPARENT);
                         } else {
                             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
                         }
                     } else {
-                        // Jalali calendar: Friday (last column, i==6) is red for holiday
-                        if (i == 6) {
+                        // Jalali calendar: Friday is red for holiday.
+                        var fridayColumn = (6 - weekStartShift + 7) % 7;
+                        if (i == fridayColumn) {
                             dc.setColor(Gfx.COLOR_DK_RED, Gfx.COLOR_TRANSPARENT);
                         } else {
                             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
@@ -254,6 +263,21 @@ class PersianCalendarView extends Ui.View {
 
     function onHide() {
         // Optional: Clean up resources here if needed
+    }
+
+    function loadWeekStartPreference() {
+        var weekStartDay = Properties.getValue("weekStartDay");
+
+        if (weekStartDay == 0 || weekStartDay == "0" || weekStartDay == 0.0 || weekStartDay == "Saturday") {
+            weekStartShift = 0;
+        } else if (weekStartDay == 1 || weekStartDay == "1" || weekStartDay == 1.0 || weekStartDay == "Sunday") {
+            weekStartShift = 1;
+        } else if (weekStartDay == 2 || weekStartDay == "2" || weekStartDay == 2.0 || weekStartDay == "Monday") {
+            weekStartShift = 2;
+        } else {
+            // Default to Saturday for invalid, unset, or legacy values.
+            weekStartShift = 0;
+        }
     }
 }
 

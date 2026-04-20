@@ -1,4 +1,8 @@
 <strings>
     <string id="AppName">PersianCalendar+</string>
     <string id="Title">Persian Calendar +</string>
+    <string id="WeekStartDayTitle">Week Start Day</string>
+    <string id="WeekStartSaturday">Saturday</string>
+    <string id="WeekStartSunday">Sunday</string>
+    <string id="WeekStartMonday">Monday</string>
 </strings>
