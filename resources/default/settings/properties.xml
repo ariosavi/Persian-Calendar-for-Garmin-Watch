@@ -1,3 +1,4 @@
 <properties>
     <property id="weekStartDay" type="number">0</property>
+    <property id="showGregorianInGlance" type="number">1</property>
 </properties>

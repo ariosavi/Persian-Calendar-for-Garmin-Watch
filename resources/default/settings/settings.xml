@@ -6,4 +6,10 @@
             <listEntry value="2">@Strings.WeekStartMonday</listEntry>
         </settingConfig>
     </setting>
+    <setting propertyKey="@Properties.showGregorianInGlance" title="@Strings.ShowGregorianInGlanceTitle">
+        <settingConfig type="list">
+            <listEntry value="1">@Strings.SettingOn</listEntry>
+            <listEntry value="0">@Strings.SettingOff</listEntry>
+        </settingConfig>
+    </setting>
 </settings>
