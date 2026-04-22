@@ -26,13 +26,25 @@ edgeexplore.resourcePath = $(base.resourcePath);resources/36x36-icon
 edgeexplore2.resourcePath = $(base.resourcePath);resources/36x36-icon
 edgemtb.resourcePath = $(base.resourcePath);resources/36x36-icon
 
+# Devices with 38 x 33 icon size
+etrextouch.resourcePath = $(base.resourcePath);resources/38x33-icon
+
+# Devices with 38 x 38 icon size
+instinctcrossoveramoled.resourcePath = $(base.resourcePath);resources/38x38-icon
+
 # Devices with 40 x 33 icon size
+# vivoactive3.resourcePath = $(base.resourcePath);resources/40x33-icon
 vivoactive3m.resourcePath = $(base.resourcePath);resources/40x33-icon
 
 # Devices with 40 x 40 icon size
 fenix7.resourcePath = $(base.resourcePath);resources/40x40-icon
 fenix7pro.resourcePath = $(base.resourcePath);resources/40x40-icon
+fenix7pronowifi.resourcePath = $(base.resourcePath);resources/40x40-icon
 fenix7s.resourcePath = $(base.resourcePath);resources/40x40-icon
+fenix7spro.resourcePath = $(base.resourcePath);resources/40x40-icon
+fenix7x.resourcePath = $(base.resourcePath);resources/40x40-icon
+fenix7xpro.resourcePath = $(base.resourcePath);resources/40x40-icon
+fenix7xpronowifi.resourcePath = $(base.resourcePath);resources/40x40-icon
 fenix8solar47mm.resourcePath = $(base.resourcePath);resources/40x40-icon
 fenix8solar51mm.resourcePath = $(base.resourcePath);resources/40x40-icon
 fr245.resourcePath = $(base.resourcePath);resources/40x40-icon
@@ -41,6 +53,7 @@ fr255.resourcePath = $(base.resourcePath);resources/40x40-icon
 fr255m.resourcePath = $(base.resourcePath);resources/40x40-icon
 fr255s.resourcePath = $(base.resourcePath);resources/40x40-icon
 fr255sm.resourcePath = $(base.resourcePath);resources/40x40-icon
+fr645.resourcePath = $(base.resourcePath);resources/40x40-icon
 fr945.resourcePath = $(base.resourcePath);resources/40x40-icon
 fr955.resourcePath = $(base.resourcePath);resources/40x40-icon
 venusq2.resourcePath = $(base.resourcePath);resources/40x40-icon
@@ -66,6 +79,8 @@ edge850.resourcePath = $(base.resourcePath);resources/56x56-icon
 
 # Devices with 60 x 60 icon size
 epix2.resourcePath = $(base.resourcePath);resources/60x60-icon
+epix2pro42mm.resourcePath = $(base.resourcePath);resources/60x60-icon
+epix2pro47mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 fenix843mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 fenixe.resourcePath = $(base.resourcePath);resources/60x60-icon
 fr265.resourcePath = $(base.resourcePath);resources/60x60-icon
@@ -73,8 +88,13 @@ fr265s.resourcePath = $(base.resourcePath);resources/60x60-icon
 instinct3amoled45mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 instinct3amoled50mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 descentg2.resourcePath = $(base.resourcePath);resources/60x60-icon
+descentmk343mm.resourcePath = $(base.resourcePath);resources/60x60-icon
+descentmk351mm.resourcePath = $(base.resourcePath);resources/60x60-icon
 d2mach1.resourcePath = $(base.resourcePath);resources/60x60-icon
 epix2pro51mm.resourcePath = $(base.resourcePath);resources/60x60-icon
+approachs7042mm.resourcePath = $(base.resourcePath);resources/60x60-icon
+marq2.resourcePath = $(base.resourcePath);resources/60x60-icon
+marq2aviator.resourcePath = $(base.resourcePath);resources/60x60-icon
 
 # Devices with 61 x 61 icon size
 venu2s.resourcePath = $(base.resourcePath);resources/61x61-icon
@@ -92,6 +112,7 @@ venux1.resourcePath = $(base.resourcePath);resources/65x65-icon
 d2mach2.resourcePath = $(base.resourcePath);resources/65x65-icon
 fenix8pro47mm.resourcePath = $(base.resourcePath);resources/65x65-icon
 venu445mm.resourcePath = $(base.resourcePath);resources/65x65-icon
+d2mach2pro.resourcePath = $(base.resourcePath);resources/65x65-icon
 
 # Devices with 68 x 68 icon size
 edge1050.resourcePath = $(base.resourcePath);resources/68x68-icon
@@ -102,3 +123,4 @@ venu2plus.resourcePath = $(base.resourcePath);resources/70x70-icon
 venu3.resourcePath = $(base.resourcePath);resources/70x70-icon
 venu3s.resourcePath = $(base.resourcePath);resources/70x70-icon
 d2airx10.resourcePath = $(base.resourcePath);resources/70x70-icon
+approachs7047mm.resourcePath = $(base.resourcePath);resources/70x70-icon
