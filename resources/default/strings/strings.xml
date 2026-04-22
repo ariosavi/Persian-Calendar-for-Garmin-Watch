@@ -5,7 +5,10 @@
     <string id="WeekStartSaturday">Saturday</string>
     <string id="WeekStartSunday">Sunday</string>
     <string id="WeekStartMonday">Monday</string>
-    <string id="ShowGregorianInGlanceTitle">Show Gregorian Date in Glance</string>
+    <string id="ShowGregorianInGlanceTitle">Show Gregorian Date</string>
     <string id="SettingOn">On</string>
     <string id="SettingOff">Off</string>
+    <string id="PersianYearModeTitle">Persian Calendar Type</string>
+    <string id="PersianYearModeHijri">Hijri</string>
+    <string id="PersianYearModeShahanshahi">Shahanshahi</string>
 </strings>

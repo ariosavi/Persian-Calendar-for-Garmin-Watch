@@ -12,4 +12,10 @@
             <listEntry value="0">@Strings.SettingOff</listEntry>
         </settingConfig>
     </setting>
+    <setting propertyKey="@Properties.persianYearMode" title="@Strings.PersianYearModeTitle">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.PersianYearModeHijri</listEntry>
+            <listEntry value="1">@Strings.PersianYearModeShahanshahi</listEntry>
+        </settingConfig>
+    </setting>
 </settings>

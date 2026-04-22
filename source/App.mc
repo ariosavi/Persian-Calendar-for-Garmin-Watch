@@ -1,4 +1,5 @@
 import Toybox.Application;
+import Toybox.Application.Properties;
 import Toybox.Lang;
 import Toybox.WatchUi;
 import Toybox.Time;
@@ -145,9 +146,22 @@ class PersianCalendarApp extends Application.AppBase {
       monthVal < 10 ? "0" + monthVal.toString() : monthVal.toString();
     var dayStr = dayVal < 10 ? "0" + dayVal.toString() : dayVal.toString();
 
-    var jalaliStr =
-      jalali.get("year").toString() + "/" + monthStr + "/" + dayStr;
+    var displayYear = getDisplayJalaliYear(jalali.get("year").toNumber());
+    var jalaliStr = displayYear.toString() + "/" + monthStr + "/" + dayStr;
     return jalaliStr;
+  }
+
+  // Converts base Jalali year to user-selected display year.
+  function getDisplayJalaliYear(baseJalaliYear as Number) as Number {
+    var yearMode = Properties.getValue("persianYearMode");
+
+    // 0 => Hijri, 1 => Shahanshahi
+    if (yearMode == 0 || yearMode == "0" || yearMode == 0.0) {
+      return baseJalaliYear;
+    }
+
+    // Default mode is Shahanshahi.
+    return baseJalaliYear + 1180;
   }
 
   // Returns the current Gregorian date as a string in "year/mm/dd" format.

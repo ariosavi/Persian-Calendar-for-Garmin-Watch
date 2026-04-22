@@ -81,7 +81,8 @@ class PersianCalendarView extends Ui.View {
                 headerText = gregorianMonthNames[gregorianMonth - 1] + " " + gregorianYear.toString();
                 headerColor = Gfx.COLOR_WHITE;
             } else {
-                headerText = persianMonthNames[currentMonthView - 1] + " " + currentYearView.toString();
+                var displayYear = persianCalendarApp.getDisplayJalaliYear(currentYearView);
+                headerText = persianMonthNames[currentMonthView - 1] + " " + displayYear.toString();
                 headerColor = Gfx.COLOR_DK_GREEN;
             }
             

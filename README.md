@@ -55,7 +55,7 @@ The application supports user settings through Garmin Connect IQ's Settings Page
 
 - Show Gregorian Date in Glance: `On / Off` (default: `On`)
 - Week Start Day: `Saturday / Sunday / Monday` (default: `Saturday`)
-- Persian Date Format: `Hijri / Shahanshahi` (default: `Shahanshahi`)
+- Persian Calendar Type: `Hijri / Shahanshahi` (default: `Hijri`)
 
 ## Related document
 
