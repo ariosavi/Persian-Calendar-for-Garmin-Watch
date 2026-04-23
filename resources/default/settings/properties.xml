@@ -2,4 +2,5 @@
     <property id="weekStartDay" type="number">0</property>
     <property id="showGregorianInGlance" type="number">1</property>
     <property id="persianYearMode" type="number">0</property>
+    <property id="dateSeparator" type="number">0</property>
 </properties>

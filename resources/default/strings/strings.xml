@@ -11,4 +11,9 @@
     <string id="PersianYearModeTitle">Persian Calendar Type</string>
     <string id="PersianYearModeHijri">Hijri</string>
     <string id="PersianYearModeShahanshahi">Shahanshahi</string>
+    <string id="DateSeparatorTitle">Date Separator</string>
+    <string id="DateSeparatorSlash">Slash ( / )</string>
+    <string id="DateSeparatorDash">Dash ( - )</string>
+    <string id="DateSeparatorDot">Dot ( . )</string>
+    <string id="DateSeparatorSpace">Space (   )</string>
 </strings>

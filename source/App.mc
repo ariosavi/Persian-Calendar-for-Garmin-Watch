@@ -134,7 +134,7 @@ class PersianCalendarApp extends Application.AppBase {
     return gregorianObject;
   }
 
-  // Returns the current Jalali date as a string in "year/mm/dd" format.
+  // Returns the current Jalali date as a string in "year<sep>mm<sep>dd" format.
   function getJalaliDateStr() {
     var today = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
     var jalali = gregorianToJalali(today.year, today.month, today.day);
@@ -147,7 +147,8 @@ class PersianCalendarApp extends Application.AppBase {
     var dayStr = dayVal < 10 ? "0" + dayVal.toString() : dayVal.toString();
 
     var displayYear = getDisplayJalaliYear(jalali.get("year").toNumber());
-    var jalaliStr = displayYear.toString() + "/" + monthStr + "/" + dayStr;
+    var sep = getDateSeparator();
+    var jalaliStr = displayYear.toString() + sep + monthStr + sep + dayStr;
     return jalaliStr;
   }
 
@@ -164,7 +165,7 @@ class PersianCalendarApp extends Application.AppBase {
     return baseJalaliYear + 1180;
   }
 
-  // Returns the current Gregorian date as a string in "year/mm/dd" format.
+  // Returns the current Gregorian date as a string in "year<sep>mm<sep>dd" format.
   function getGregorianDateStr() {
     var today = Gregorian.info(Time.now(), Time.FORMAT_SHORT);
     var monthStr =
@@ -172,8 +173,26 @@ class PersianCalendarApp extends Application.AppBase {
     var dayStr =
       today.day < 10 ? "0" + today.day.toString() : today.day.toString();
 
-    var gregorianStr = today.year.toString() + "/" + monthStr + "/" + dayStr;
+    var sep = getDateSeparator();
+    var gregorianStr = today.year.toString() + sep + monthStr + sep + dayStr;
     return gregorianStr;
+  }
+
+  // Returns the user-selected date separator character.
+  // 0 => "/", 1 => "-", 2 => ".", 3 => " "
+  function getDateSeparator() as String {
+    var sepMode = Properties.getValue("dateSeparator");
+    if (sepMode == 1 || sepMode == "1" || sepMode == 1.0) {
+      return "-";
+    }
+    if (sepMode == 2 || sepMode == "2" || sepMode == 2.0) {
+      return ".";
+    }
+    if (sepMode == 3 || sepMode == "3" || sepMode == 3.0) {
+      return " ";
+    }
+    // Default to slash.
+    return "/";
   }
 }
 
