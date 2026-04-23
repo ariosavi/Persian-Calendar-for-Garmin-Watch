@@ -14,12 +14,6 @@ class PersianCalendarDelegate extends Ui.InputDelegate {
         return true;
     }
 
-    // On key start, toggle between Gregorian and Jalali calendar views
-    function onKeyStart(keyEvent as Ui.KeyEvent) {
-        view.toggleDisplayMode();
-        return true;
-    }
-    
     // On swipe up or down, show the next or previous month
     function onSwipe(swipeEvent as Ui.SwipeEvent) {
         if (swipeEvent.getDirection() == Ui.SWIPE_UP) {
@@ -28,7 +22,7 @@ class PersianCalendarDelegate extends Ui.InputDelegate {
             view.showPreviousMonth();
         } else if (swipeEvent.getDirection() == Ui.SWIPE_RIGHT) {
             // close the view
-            Ui.popView(Ui.SLIDE_LEFT);
+            Ui.popView(Ui.SLIDE_RIGHT);
         }
         return true;
     }
@@ -39,12 +33,15 @@ class PersianCalendarDelegate extends Ui.InputDelegate {
             return true;
         } else if (keyEvent.getKey() == Ui.KEY_UP) {
             view.showPreviousMonth();
+            return true;
         } else if (keyEvent.getKey() == Ui.KEY_DOWN) {
             view.showNextMonth();
+            return true;
         } else if (keyEvent.getKey() == Ui.KEY_ESC) {
             // minimize the view
-            Ui.popView(Ui.SLIDE_LEFT);
+            Ui.popView(Ui.SLIDE_RIGHT);
+            return true;
         }
-        return true;
+        return false;
     }
 }

@@ -5,7 +5,6 @@ import Toybox.WatchUi;
 import Toybox.Time;
 import Toybox.Time.Gregorian;
 
-(:glance)
 class PersianCalendarApp extends Application.AppBase {
   // Called when the application initializes
   function initialize() {
@@ -30,6 +29,7 @@ class PersianCalendarApp extends Application.AppBase {
   }
 
   // Returns the glance view of the application
+  (:glance)
   function getGlanceView() {
     return [new PersianCalendarGlanceView()];
   }
@@ -193,6 +193,73 @@ class PersianCalendarApp extends Application.AppBase {
     }
     // Default to slash.
     return "/";
+  }
+  // Determine if a Persian year is a leap year using the 33-year cycle.
+  function isJalaliLeapYear(year as Number) as Boolean {
+    var r = year % 33;
+    return r == 1 || r == 5 || r == 9 || r == 13 || r == 17 || r == 22 || r == 26 || r == 30;
+  }
+
+  // Get the number of days in a Jalali month.
+  function getJalaliMonthDays(month as Number, year as Number) as Number {
+    if (month < 1 || month > 12) {
+      return 0;
+    }
+    var monthDays = [31, 31, 31, 31, 31, 31, 30, 30, 30, 30, 30, 29];
+    var days = monthDays[month - 1];
+    if (month == 12 && isJalaliLeapYear(year)) {
+      days = 30;
+    }
+    return days;
+  }
+
+  // Calculate the weekday of the first day of a Jalali month/year (Garmin: Sun=1..Sat=7)
+  function getJalaliWeekDay(month as Number, year as Number) as Number {
+    var gregorian = jalaliToGregorian(year, month, 1);
+    var options = {
+      :year  => gregorian.get("year"),
+      :month => gregorian.get("month"),
+      :day   => gregorian.get("day")
+    };
+    var date = Gregorian.moment(options);
+    var firstDayInfo = Gregorian.info(date, Time.FORMAT_SHORT);
+    return firstDayInfo.day_of_week;
+  }
+
+  // Determine if a Gregorian year is a leap year.
+  function isGregorianLeapYear(year as Number) as Boolean {
+    if (year % 400 == 0) {
+      return true;
+    } else if (year % 100 == 0) {
+      return false;
+    } else if (year % 4 == 0) {
+      return true;
+    }
+    return false;
+  }
+
+  // Get the number of days in a Gregorian month.
+  function getGregorianMonthDays(month as Number, year as Number) as Number {
+    if (month < 1 || month > 12) {
+      return 0;
+    }
+    var monthDays = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    if (month == 2 && isGregorianLeapYear(year)) {
+      return 29;
+    }
+    return monthDays[month - 1];
+  }
+
+  // Calculate the weekday of the first day of a Gregorian month/year (Garmin: Sun=1..Sat=7)
+  function getGregorianWeekDay(month as Number, year as Number) as Number {
+    var options = {
+      :year  => year,
+      :month => month,
+      :day   => 1
+    };
+    var date = Gregorian.moment(options);
+    var firstDayInfo = Gregorian.info(date, Time.FORMAT_SHORT);
+    return firstDayInfo.day_of_week;
   }
 }
 

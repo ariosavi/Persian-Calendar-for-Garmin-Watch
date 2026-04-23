@@ -13,8 +13,9 @@ class PersianCalendarGlanceView extends WatchUi.GlanceView {
   }
 
   function onLayout(dc as Graphics.Dc) as Void {
-    jalaliText = (new PersianCalendarApp()).getJalaliDateStr();
-    gregorianText = (new PersianCalendarApp()).getGregorianDateStr();
+    var app = getApp();
+    jalaliText = app.getJalaliDateStr();
+    gregorianText = app.getGregorianDateStr();
   }
 
   function onUpdate(dc as Graphics.Dc) as Void {
@@ -34,7 +35,7 @@ class PersianCalendarGlanceView extends WatchUi.GlanceView {
           0,
           startY,
           Graphics.FONT_MEDIUM,
-          new PersianCalendarApp().getJalaliDateStr(),
+          jalaliText,
           Graphics.TEXT_JUSTIFY_LEFT
       );
 
@@ -44,7 +45,7 @@ class PersianCalendarGlanceView extends WatchUi.GlanceView {
             0,
             startY + mediumTextHeight,
             Graphics.FONT_TINY,
-            new PersianCalendarApp().getGregorianDateStr(),
+            gregorianText,
             Graphics.TEXT_JUSTIFY_LEFT
         );
       }
